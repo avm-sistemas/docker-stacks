@@ -1,0 +1,9 @@
+version: '3'
+
+services:
+    app:
+        container_name: please-get-my-ip
+        image: avmesquita/please-get-my-ip
+        network_mode: bridge
+        ports:
+            - 8617:80

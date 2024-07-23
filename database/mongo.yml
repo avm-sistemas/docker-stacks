@@ -1,0 +1,19 @@
+version: '3.4'
+
+volumes:
+  mymongodata:
+
+services:
+  mongo:
+    image: mongodb/mongodb-community-server:latest
+    restart: unless-stopped
+    ports: 
+      - 0.0.0.0:27017:27017
+      - 0.0.0.0:28017:28017
+    volumes:
+      - mymongodata:/data/db
+    environment:
+        - MONGO_INITDB_DATABASE:admin
+        - MONGO_INITDB_ROOT_USERNAME=root
+        - MONGO_INITDB_ROOT_PASSWORD=mongorootpwd
+        - bind_ip=::,0.0.0.0

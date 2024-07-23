@@ -1,0 +1,21 @@
+volumes:
+    stalwart_data:   
+
+services:
+    stalwart:
+        image: stalwartlabs/mail-server:latest
+        container_name: stalwart
+        restart: unless-stopped
+        volumes:
+            - stalwart_data:/opt/stalwart-mail
+        ports:
+            - 443:443 
+            - 8080:8080 
+            - 25:25 
+            - 587:587 
+            - 465:465
+            - 143:143
+            - 993:993
+            - 4190:4190
+            - 110:110
+            - 995:995        

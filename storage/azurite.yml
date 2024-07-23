@@ -1,0 +1,21 @@
+version: '3.9'
+
+volumes:
+    azurite_data:
+    azurite_workspace:
+    
+services:
+    azurite:
+        image: mcr.microsoft.com/azure-storage/azurite
+        container_name: azurite
+        ports:
+            - 10000:10000 
+            - 10001:10001
+            - 10002:10002
+        volumes:
+            - azurite_workspace:/workspace
+            - azurite_data:/data
+        command: "azurite --blobHost 0.0.0.0 --blobPort 10000 --queueHost 0.0.0.0 --queuePort 10001 --tableHost 0.0.0.0 --tablePort 10002"
+        environment:
+            - AZURITE_ACCOUNTS=devstoreaccount1:Eby8vdM02xNOcqFlqUwJPLlm34234UzFT50awertwetwetq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;azurestorageaccount:your-azure-storage-key
+            - AZURITE_DB=mysql://your-user:your-password@host.mysql.database.azure.com:3306/azurite_blob

@@ -1,0 +1,16 @@
+name: avm-postgres
+
+services:
+  db:
+    image: postgres
+    restart: always
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_PASSWORD: p057gr35-pwd
+      POSTGRES_HOST_AUTH_METHOD: trust
+
+volumes:
+  pgdata:

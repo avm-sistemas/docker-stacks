@@ -1,0 +1,21 @@
+version: '3'
+
+volumes:
+    mysql_data:
+
+services:
+    freshrss:
+        image: freshrss/freshrss
+        container_name: freshrss
+        volumes: 
+          - mysql_data:/var/lib/mysql
+        ports:
+          - 80:80
+          - 443:443
+        environment:
+          - MYSQL_ROOT_PASSWORD=root-password
+          - MYSQL_HOST=azure.mysql.database.azure.com
+          - MYSQL_DATABASE=freshrssdb
+          - MYSQL_USER=azure-database-user
+          - MYSQL_PASSWORD=azure-database-password
+

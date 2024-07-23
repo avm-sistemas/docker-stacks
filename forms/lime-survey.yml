@@ -1,0 +1,27 @@
+version: '3'
+
+volumes:
+    limesurvey_plugins:
+    limesurvey_upload:
+    limesurvey_config:
+
+services:
+    limesurvey:
+        container_name: limesurvey
+        image: acspri/limesurvey
+        ports:
+          - 8082:80
+        environment:
+          - LIMESURVEY_DB_HOST=azure.mysql.database.azure.com
+          - LIMESURVEY_DB_USER=your-user
+          - LIMESURVEY_DB_PASSWORD=your-password
+          - LIMESURVEY_DB_NAME=limesurveydb
+          
+          - LIMESURVEY_ADMIN_USER=adminuser
+          - LIMESURVEY_ADMIN_PASSWORD=adminpwd
+          - LIMESURVEY_ADMIN_NAME="Administrator"
+          - LIMESURVEY_ADMIN_EMAIL="your-account@your-domain.com"
+        volumes:
+          - limesurvey_plugins:/var/www/html/plugins
+          - limesurvey_upload:/var/www/html/upload
+          - limesurvey_config:/var/www/html/application/config

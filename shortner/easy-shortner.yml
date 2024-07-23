@@ -1,0 +1,25 @@
+version: "3"
+
+services:
+  easyshortener:
+    image: ghcr.io/easypanel-community/easyshortener
+    container_name: easyshortner
+    restart: unless-stopped
+    environment:
+      # - APP_KEY=  set this to what you get from php artisan key:generate ( required )
+      - EASYSHORTENER_ALLOW_REGISTRATION=true
+      - EASYSHORTENER_INSTALLATION_ENV=docker
+      - EASYSHORTENER_ALLOW_ANALYTICS=false
+      - FORCE_HTTPS=false
+      - DB_CONNECTION=mysql
+      - DATABASE_URL=mysql://your-user:your-password@host.mysql.database.azure.com$:3306/easyshortenerdb
+    ports:
+      - "2030:80"
+    volumes:
+      - easyshortener-www:/var/www/html
+
+volumes:
+  easyshortener-db-data:
+  easyshortener-www:
+  
+  

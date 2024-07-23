@@ -1,0 +1,29 @@
+version: "3"
+
+services:
+  moodleapp:
+    image: docker.n8n.io/n8nio/n8n
+    container_name: n8n-app
+    ports:
+      - 5678:5678
+    restart: always
+    volumes:
+       - n8n_data:/home/node/.n8n       
+    environment:
+      N8N_SECURE_COOKIE: false
+      DB_TABLE_PREFIX: tb_n8n_
+      DB_TYPE: sqlite
+      DB_MYSQL_DATABASE: n8n
+      DB_MYSQL_HOST: azure.mysql.database.azure.com
+      DB_MYSQL_PORT: 3306
+      DB_MYSQL_USER: your-user
+      DB_MYSQL_PASSWORD: your-password
+      DB_POSTGRES_DATABASE: n8ndb
+      DB_POSTGRES_HOST: database-server.cloudapp.azure.com
+      DB_POSTGRES_PORT: 5432
+      DB_POSTGRES_USER: postgres
+      DB_POSTGRES_PASSWORD: p057gr35-pwd
+      DB_SQLITE_VACUUM_ON_STARTUP: true
+
+volumes:
+  n8n_data:

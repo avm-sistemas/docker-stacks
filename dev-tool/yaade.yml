@@ -1,0 +1,14 @@
+version: '3'
+
+volumes:
+  yaade_data:
+
+services:
+  yaade:
+    image: esperotech/yaade:latest
+    ports:
+      - 9339:9339
+    volumes:
+      - yaade_data:/app/data
+    environment:      
+      - YAADE_ADMIN_USERNAME=admin

@@ -1,0 +1,15 @@
+version: "3"
+
+services:
+  metabase:
+    image: metabase/metabase
+    ports:
+      - 3000:3000       
+    restart: always
+    environment:
+      MB_DB_TYPE: mysql
+      MB_DB_DBNAME: metabasedb
+      MB_DB_PORT: 3306
+      MB_DB_USER: azure-database-user
+      MB_DB_PASS: azure-database-password
+      MB_DB_HOST: azure.mysql.database.azure.com

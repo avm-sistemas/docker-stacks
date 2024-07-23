@@ -1,0 +1,50 @@
+name: avm-directus
+
+services:
+  directus:
+    image: directus/directus:10.10.7
+    ports:
+      - 8055:8055
+    volumes:
+      - ./database:/directus/database
+      - ./uploads:/directus/uploads
+      - ./extensions:/directus/extensions      
+    environment:
+      ADMIN_EMAIL: account@your-domain.com
+      ADMIN_PASSWORD: d1r3ctu5-p@55w0rd
+      CACHE_AUTO_PURGE: false
+      CACHE_ENABLED: false
+      CACHE_SCHEMA: true
+      CORS_ENABLED: true
+      CORS_ORIGIN: http://localhost:4200,http://localhost:3000,https://directus.your-domain.com
+      DB_CLIENT: mysql
+      DB_DATABASE: directus
+      DB_ENCRYPT: true
+      DB_HOST: azure.mysql.database.azure.com
+      DB_PASSWORD: azure-db-mysql-password
+      DB_PORT: 3306
+      DB_TrustServerCertificate: true
+      DB_USER: azure-db-mysql-user
+      DOCKER_REGISTRY_SERVER_URL: https://index.docker.io/v1
+      EMAIL_FROM: account@your-domain.com
+      EMAIL_TRANSPORT: sendmail
+      encrypt: true
+      KEY: SAD%BUT%TRUE(/&(sgdfg34534))
+      MARKETPLACE_REGISTRY: https://registry.directus.io
+      MARKETPLACE_TRUST: sandbox
+      PUBLIC_URL: http://directus.your-domain.com/
+      SECRET: 234769945238SECRET467jhsftg
+      STORAGE_AVMAZURE_ACCOUNT_KEY: AzureStorageAccountKey
+      STORAGE_AVMAZURE_ACCOUNT_NAME: AzureStorageAccountName
+      STORAGE_AVMAZURE_CONTAINER_NAME: AzureContainerName
+      STORAGE_AVMAZURE_DRIVER: azure
+      STORAGE_AVMAZURE_ENDPOINT: https://your-storage-name.blob.core.windows.net
+      STORAGE_LOCATIONS: AVMAZURE
+      TELEMETRY: false
+      WEBSITES_ENABLE_APP_SERVICE_STORAGE: false
+      WEBSOCKETS_ENABLED: true
+
+volumes:  
+    database:
+    uploads:
+    extensions:
