@@ -1,0 +1,5 @@
+version: '3'
+
+services:
+    gallery:
+        image: xemle/home-gallery

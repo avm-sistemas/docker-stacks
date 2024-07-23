@@ -1,0 +1,6 @@
+services:
+    app:
+        image: avmesquita/finance-app:latest
+        container_name: finance-app 
+        ports:
+            - 80:80 

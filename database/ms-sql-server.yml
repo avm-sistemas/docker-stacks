@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  phpmyadmin:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    container_name: MS-SQL-SERVER
+    ports:
+      - 1433:1433
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=mssqlsapassword
+      - MSSQL_PID=Standard
+      - MSSQL_AGENT_ENABLED=true

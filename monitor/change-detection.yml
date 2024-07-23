@@ -1,0 +1,19 @@
+name: avm-changedetection
+
+services:
+  changedetection:
+    image: dgtlmoon/changedetection.io
+    container_name: avm-changedetection-io
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: avm-p057gr35-pwd      
+    volumes:      
+      - datastore-volume:/datastore
+    ports:
+      - 5000:5000
+  
+volumes:
+  datastore-volume:  
+
+      
+    

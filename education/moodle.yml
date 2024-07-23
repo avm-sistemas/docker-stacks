@@ -1,0 +1,33 @@
+version: "3.8"
+
+services:
+  moodleapp:
+    image: docker.io/bitnami/moodle:4.4
+    container_name: moodle-app
+    ports:
+      - 80:80
+      - 443:443
+    restart: always
+    volumes:
+       - moodle-data:/bitnami/moodle
+       - moodledata_data:/bitnami/moodledata
+       - apache_conf:/bitnami/apache/conf
+    environment:
+      - MOODLE_DATABASE_TYPE=mariadb
+      - MOODLE_DATABASE_HOST=avm-my-database.mysql.database.azure.com
+      - MOODLE_DATABASE_PORT_NUMBER=3306
+      - MOODLE_DATABASE_USER=username
+      - MOODLE_DATABASE_NAME=moodledb
+      - MOODLE_DATABASE_PASSWORD=password          
+      - ALLOW_EMPTY_PASSWORD=false
+      - MOODLE_SITE_NAME=Moodle Site
+      - MOODLE_USERNAME=moddleuser
+      - MOODLE_PASSOWRD=moodlepwd
+
+volumes:
+  moodle-data:
+    driver: local
+  moodledata_data:
+    driver: local
+  apache_conf:
+    driver: local

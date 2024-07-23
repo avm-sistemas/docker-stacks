@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  curity:
+    image: curity.azurecr.io/curity/idsvr:9.2.1
+    ports:
+      - 6749:6749
+      - 8443:8443
+    environment:
+      - PASSWORD=p@55w0rd
+      - LICENSE=eyJh...
+      

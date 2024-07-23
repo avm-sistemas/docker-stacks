@@ -1,0 +1,20 @@
+version: '3'
+
+volumes:
+    mailserver_var:    
+
+services:
+    mailserver:        
+        image: axigen/axigen
+        volumes:
+             - mailserver_var:/axigen/var
+        ports:
+             - 80:80 
+             - 443:443 
+             - 9443:9443 
+             - 993:993 
+             - 995:995 
+             - 25:25 
+             - 465:465 
+             - 9000:9000 
+             - 7000:7000 

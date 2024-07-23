@@ -1,0 +1,20 @@
+version: "3"
+
+volumes:
+    wordpress_data:
+    
+services:
+   wp:
+     image: wordpress:latest
+     ports:
+       - 80:80
+       - 443:443
+     restart: always
+     volumes: 
+         - wordpress_data:/var/www/html
+     
+     environment:
+       WORDPRESS_DB_HOST: azure.mysql.database.azure.com:3306
+       WORDPRESS_DB_USER: "azure-database-user"
+       WORDPRESS_DB_PASSWORD: "azure-database-password"
+       WORDPRESS_DB_DATABASE: "wordpress"

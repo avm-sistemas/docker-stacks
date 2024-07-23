@@ -1,0 +1,16 @@
+version: '3.2'
+services:
+    input:
+      image: ghcr.io/deck9/input:main
+      container_name: input
+      hostname: adi-lab-dev.westeurope.cloudapp.azure.com
+      volumes:
+        - input-data:/var/www/html/storage
+      ports:
+        - 8080:8080
+      restart: unless-stopped
+      environment:
+        - APP_URL="https://your-host.westeurope.cloudapp.azure.com:8080"
+
+volumes:
+  input-data:
