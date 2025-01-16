@@ -1,5 +1,9 @@
 version: '3'
 
+volumes:
+  pihole_app:
+  dns_config:
+
 services:
   pihole:
     container_name: pihole
@@ -15,8 +19,8 @@ services:
       WEBPASSWORD: 'your-secure-password'
     # Volumes store your data between container upgrades
     volumes:
-      - './etc-pihole:/etc/pihole'
-      - './etc-dnsmasq.d:/etc/dnsmasq.d'    
+      - 'pihole_app:/etc/pihole'
+      - 'dns_config:/etc/dnsmasq.d'
     cap_add:
       - NET_ADMIN
     restart: unless-stopped
