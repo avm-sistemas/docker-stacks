@@ -1,0 +1,99 @@
+version: '3.3'
+
+volumes:
+  db-data:
+  s3-data:
+
+services:
+  caddy-gen:
+    image: 'wemakeservices/caddy-gen:latest'
+    restart: always
+    volumes:
+      - '/var/run/docker.sock:/tmp/docker.sock:ro'
+      - '{$PWD}/.typebot/caddy-certificates:/data/caddy'
+    ports:
+      - '80:80'
+      - '443:443'
+    depends_on:
+      - typebot-builder
+      - typebot-viewer
+
+  typebot-db:
+    image: postgres:16
+    restart: always
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=typebot
+      - POSTGRES_PASSWORD=typebot
+    healthcheck:
+        test: ["CMD-SHELL", "pg_isready -U postgres"]
+        interval: 5s
+        timeout: 5s
+        retries: 5
+
+  typebot-builder:
+    labels:
+      virtual.host: 'typebot.domain.com' # change to your domain
+      virtual.port: '3000'
+      virtual.tls-email: 'admin@example.com' # change to your email
+    image: baptistearno/typebot-builder:latest
+    depends_on:
+      typebot-db:
+        condition: service_healthy
+    restart: always
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
+    # See https://docs.typebot.io/self-hosting/configuration for more configuration options
+    env_file:
+      - .env
+
+  typebot-viewer:
+    labels:
+      virtual.host: 'bot.domain.com' # change to your domain
+      virtual.port: '3000'
+      virtual.tls-email: 'admin@example.com' # change to your email
+      # Necessary to enable message streaming
+      virtual.proxy.directives: |
+        flush_interval -1
+    image: baptistearno/typebot-viewer:latest
+    depends_on:
+      typebot-db:
+        condition: service_healthy
+    restart: always
+    # See https://docs.typebot.io/self-hosting/configuration for more configuration options
+    env_file:
+      - .env
+
+  mail:
+    image: bytemark/smtp
+    restart: always
+
+  minio:
+    labels:
+      virtual.host: 'storage.domain.com' # change to your domain
+      virtual.port: '9000'
+      virtual.tls-email: 'admin@example.com' # change to your email
+    image: minio/minio
+    command: server /data
+    ports:
+      - '9000:9000'
+    environment:
+      MINIO_ROOT_USER: minio
+      MINIO_ROOT_PASSWORD: minio123
+    volumes:
+      - s3-data:/data
+
+  # This service just make sure a bucket with the right policies is created
+  createbuckets:
+    image: minio/mc
+    depends_on:
+      - minio
+    entrypoint: >
+      /bin/sh -c "
+      sleep 10;
+      /usr/bin/mc config host add minio http://minio:9000 minio minio123;
+      /usr/bin/mc mb minio/typebot;
+      /usr/bin/mc anonymous set public minio/typebot/public;
+      exit 0;
+      "
