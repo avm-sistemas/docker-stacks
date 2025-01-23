@@ -1,0 +1,14 @@
+version: '3'
+
+volumes:
+   user_data:
+   user_scripts:
+
+services:
+   scrapperdev:
+       image: amerkurev/scrapper:latest
+       ports:
+          - 3000:3000
+       volumes:
+          - user_data:/home/user/user_data
+          - user_scripts:/home/user/user_scripts
