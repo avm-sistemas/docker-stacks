@@ -1,0 +1,12 @@
+services:
+  nocodb:
+    image: nocodb/nocodb:latest
+    ports:
+      - 8080:8080
+    volumes:
+      - nocodb-data:/usr/app/data/
+    environment:
+      NC_AUTH_JWT_SECRET: "569a1821-0a93-45e8-87ab-eb857f20a010"
+
+volumes:  
+    nocodb-data:
