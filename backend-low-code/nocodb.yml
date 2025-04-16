@@ -12,4 +12,3 @@ services:
     #    -e NC_AUTH_JWT_SECRET="569a1821-0a93-45e8-87ab-eb857f20a010" \
     ports:
       - 8080:8080 
-  
