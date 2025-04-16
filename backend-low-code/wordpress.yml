@@ -2,19 +2,36 @@ version: "3"
 
 volumes:
     wordpress_data:
+    wp_mysql_data:
     
 services:
-   wp:
-     image: wordpress:latest
-     ports:
-       - 80:80
-       - 443:443
-     restart: always
-     volumes: 
-         - wordpress_data:/var/www/html
-     
-     environment:
-       WORDPRESS_DB_HOST: azure.mysql.database.azure.com:3306
-       WORDPRESS_DB_USER: "azure-database-user"
-       WORDPRESS_DB_PASSWORD: "azure-database-password"
-       WORDPRESS_DB_DATABASE: "wordpress"
+  wordpress:
+    image: wordpress:latest
+    ports:
+      - 80:80
+      - 443:443
+    depends_on:
+      - mysql
+    restart: always
+    volumes: 
+      - wordpress_data:/var/www/html     
+    environment:
+      WORDPRESS_DB_HOST: mysql
+      WORDPRESS_DB_USER: root
+      WORDPRESS_DB_PASSWORD: "wp-password"
+      WORDPRESS_DB_DATABASE: "wordpress"
+  mysql:  
+    image: 'mysql:5.7'
+    environment:
+      MYSQL_DATABASE: wordpress
+      MYSQL_ROOT_PASSWORD: "wp-password"
+    volumes:
+      - wp_mysql_data:/var/lib/mysql
+
+networks:  
+  ohyeah:
+    ipam:
+      driver: default
+      config:
+        - subnet: "10.56.1.0/24"
+
