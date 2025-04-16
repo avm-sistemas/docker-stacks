@@ -1,0 +1,105 @@
+
+services:
+  database:
+    image: postgres
+    volumes:
+      - "./directus/database_data:/var/lib/postgresql/data"
+    environment:
+      POSTGRES_USER: "directus"
+      POSTGRES_PASSWORD: "directus"
+      POSTGRES_DB: "directus"
+    healthcheck:
+      test: ["CMD", "pg_isready", "--host=localhost", "--username=directus"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_interval: 5s
+      start_period: 30s
+
+  cache:
+    image: redis
+    healthcheck:
+      test: ["CMD-SHELL", "[ $$(redis-cli ping) = 'PONG' ]"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_interval: 5s
+      start_period: 30s
+
+  minio:
+    image: minio/minio
+    volumes: 
+      - "./directus/minio_data:/data"
+    environment:
+      - 'MINIO_ROOT_USER:minioadmin' 
+      - 'MINIO_ROOT_PASSWORD:minioadmin' 
+    command: server /data/minio/ --console-address :9001
+    ports:
+      - 5106:9000
+      - 5112:9001
+
+  maildev:
+    image: maildev/maildev
+    ports:
+      - 1025:1025
+      - 1080:1080
+    environment:
+      - TZ=Europe/Lisbon
+      - MAILDEV_WEB_PORT=1080
+      - MAILDEV_SMTP_PORT=1025      
+      - MAILDEV_MAIL_DIRECTORY=/home/maildev
+    volumes:
+      - ./directus/maildev_data:/home/maildev:rw
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+
+  directus:
+    image: directus/directus
+    ports:
+      - 8055:8055
+    volumes:
+      - "./directus/uploads:/directus/uploads"
+      - "./directus/extensions:/directus/extensions"
+    depends_on:
+      database:
+        condition: service_healthy
+      cache:
+        condition: service_healthy
+    environment:
+      PUBLIC_URL: "http://localhost:8055"
+
+      KEY: "DIRECTUS-KEY"
+      SECRET: "REPLACE_WITH_YOUR_SECRET"      
+      ADMIN_EMAIL: "avmesquita@gmail.com"
+      ADMIN_PASSWORD: "REPLACE_WITH_YOUR_PASSWORD"
+      
+      EMAIL_TRANSPORT: smtp
+      EMAIL_SMTP_HOST: maildev
+      EMAIL_SMTP_PORT: 1025            
+
+      DB_CLIENT: "pg"
+      DB_HOST: "database"
+      DB_PORT: "5432"
+      DB_DATABASE: "directus"
+      DB_USER: "directus"
+      DB_PASSWORD: "directus"
+
+      CACHE_ENABLED: "true"
+      CACHE_AUTO_PURGE: "true"
+      CACHE_STORE: "redis"
+      REDIS: "redis://cache:6379"
+
+      AUTH_PROVIDERS: "LOCAL"
+      # AUTH_DISABLE_DEFAULT: true
+
+      STORAGE_LOCATIONS: s3
+      STORAGE_S3_DRIVER: s3
+      STORAGE_S3_KEY: 1gB6huqVpRqrfIIxQzxn
+      STORAGE_S3_SECRET: JaoejMmJVfGrGBKY36JwBvGM1PBvcWQ8fuFZBbCd
+      STORAGE_S3_BUCKET: 'directus'
+      STORAGE_S3_REGION: 'region1'
+      STORAGE_S3_ENDPOINT: 'http://minio:9000'
+      STORAGE_S3_S3_FORCE_PATH_STYLE: 'true'
+      STORAGE_S3_FORCE_PATH_STYLE: 'true'

@@ -1,12 +1,14 @@
+volumes:
+  nocodb_data:
+  
 services:
   nocodb:
     image: nocodb/nocodb:latest
+    volumes: 
+      - "nocodb_data:/usr/app/data/"
+    #postgres
+    #environment:
+    #    -e NC_DB="pg://host.docker.internal:5432?u=root&p=password&d=d1" \
+    #    -e NC_AUTH_JWT_SECRET="569a1821-0a93-45e8-87ab-eb857f20a010" \
     ports:
-      - 8080:8080
-    volumes:
-      - nocodb-data:/usr/app/data/
-    environment:
-      NC_AUTH_JWT_SECRET: "569a1821-0a93-45e8-87ab-eb857f20a010"
-
-volumes:  
-    nocodb-data:
+      - 8080:8080 
