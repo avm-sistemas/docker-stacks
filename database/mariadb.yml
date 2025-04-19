@@ -1,0 +1,51 @@
+volumes:
+  pma_sessions:
+    driver: local
+  pma_themes:
+    driver: local
+  pma_config:
+    driver: local
+  pma_app_root:
+    driver: local
+  db-backup:
+    driver: local
+
+  services:
+    db:
+        image: mariadb
+        restart: always
+        environment:
+          MARIADB_ROOT_PASSWORD: mysql-root-password
+        volumes:
+          - db-backup:/backup
+
+    adminer:
+      image: adminer
+      restart: always
+      ports:
+        - 8081:8080
+
+    phpmyadmin:
+        image: docker.io/phpmyadmin
+        container_name: PHP_My_Admin
+        ports:
+            - 8080:80
+        extra_hosts:
+            - "host.docker.internal:host-gateway"
+        volumes:
+            - pma_sessions:/sessions
+            - pma_themes:/www/themes/themes/ phpmyadmin/phpmyadmin
+            - pma_config:/etc/phpmyadmin/config.user.inc.php
+            - pma_app_root:/etc/phpmyadmin
+        environment:
+            - PMA_ARBITRARY=1
+            - MYSQL_ROOT_PASSWORD=mysql-root-password
+            - PMA_HOSTS=db,host.docker.internal
+            - PMA_PORT=3306
+            - ZeroConf=false
+            - CONFIGURATION_STORAGE_ENABLE=true
+            - CONFIGURATION_STORAGE_DB_HOST=db
+            - CONFIGURATION_STORAGE_DB_PORT_NUMBER=3306
+            - CONFIGURATION_STORAGE_DB_USER=your-user
+            - CONFIGURATION_STORAGE_DB_PASSWORD=mysql-root-password
+            - CONFIGURATION_STORAGE_DB_NAME=phpmyadmin
