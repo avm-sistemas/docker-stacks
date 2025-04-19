@@ -1,6 +1,7 @@
 services:
   phpmyadmin:
     image: docker.io/phpmyadmin
+    restart: unless-stopped
     container_name: PHP_My_Admin
     ports:
       - 8080:80

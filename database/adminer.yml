@@ -1,0 +1,7 @@
+services:
+
+  adminer:
+    image: dockette/adminer:dg
+    restart: unless-stopped
+    ports:
+      - 8888:80
