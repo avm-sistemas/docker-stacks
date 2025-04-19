@@ -1,5 +1,3 @@
-name: avm-postgres
-
 services:
   db:
     image: postgres

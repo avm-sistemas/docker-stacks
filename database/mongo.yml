@@ -1,5 +1,3 @@
-version: '3.4'
-
 volumes:
   mymongodata:
 
@@ -8,8 +6,8 @@ services:
     image: mongodb/mongodb-community-server:latest
     restart: unless-stopped
     ports: 
-      - 0.0.0.0:27017:27017
-      - 0.0.0.0:28017:28017
+      - 0.0.0.0:27018:27017
+      - 0.0.0.0:28018:28017
     volumes:
       - mymongodata:/data/db
     environment:
@@ -17,3 +15,18 @@ services:
         - MONGO_INITDB_ROOT_USERNAME=root
         - MONGO_INITDB_ROOT_PASSWORD=mongorootpwd
         - bind_ip=::,0.0.0.0
+
+  express:
+    image: mongo-express
+    environment:
+      - ME_CONFIG_MONGODB_SERVER=mongo
+      - ME_CONFIG_BASICAUTH_USERNAME=avmesquita
+      - ME_CONFIG_BASICAUTH_PASSWORD=123@Mudar
+      - ME_CONFIG_MONGODB_ENABLE_ADMIN=true
+      - ME_CONFIG_MONGODB_ADMINUSERNAME=root
+      - ME_CONFIG_MONGODB_ADMINPASSWORD=mongorootpwd
+      - ME_CONFIG_MONGODB_PORT=27017
+      - ME_CONFIG_SITE_SSL_ENABLED=false
+    ports:
+      - 8081:8081
+      
