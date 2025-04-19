@@ -13,20 +13,21 @@ volumes:
   services:
     db:
         image: mariadb
-        restart: always
+        restart: unless-stopped
         environment:
           MARIADB_ROOT_PASSWORD: mysql-root-password
         volumes:
           - db-backup:/backup
 
     adminer:
-      image: adminer
-      restart: always
+      image: dockette/adminer:dg
+      restart: unless-stopped
       ports:
-        - 8081:8080
+        - 8081:80
 
     phpmyadmin:
         image: docker.io/phpmyadmin
+        restart: unless-stopped
         container_name: PHP_My_Admin
         ports:
             - 8080:80

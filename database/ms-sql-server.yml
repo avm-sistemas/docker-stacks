@@ -3,6 +3,7 @@ version: "3.8"
 services:
   phpmyadmin:
     image: mcr.microsoft.com/mssql/server:2019-latest
+    restart: unless-stopped
     container_name: MS-SQL-SERVER
     ports:
       - 1433:1433

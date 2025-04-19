@@ -15,7 +15,7 @@ volumes:
   services:
     db:
         image: mysql
-        restart: always
+        restart: unless-stopped
         environment:
           MARIADB_ROOT_PASSWORD: mysql-root-password
         volumes:
@@ -23,14 +23,15 @@ volumes:
           - databases:/var/lib/mysql
 
     adminer:
-      image: adminer
-      restart: always
+      image: dockette/adminer:dg
+      restart: unless-stopped
       ports:
-        - 8081:8080
+        - 8081:80
 
     phpmyadmin:
         image: docker.io/phpmyadmin
         container_name: PHP_My_Admin
+        restart: unless-stopped
         ports:
             - 8080:80
         extra_hosts:

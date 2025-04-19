@@ -18,6 +18,7 @@ services:
 
   express:
     image: mongo-express
+    restart: unless-stopped
     environment:
       - ME_CONFIG_MONGODB_SERVER=mongo
       - ME_CONFIG_BASICAUTH_USERNAME=avmesquita
