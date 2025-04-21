@@ -1,0 +1,33 @@
+volumes:
+  zabbix_alertscripts:
+  zabbix_externalscripts:
+  zabbix_modules:
+  zabbix_enc:
+  zabbix_ssh_keys:
+  zabbix_certs:
+  zabbix_keys:
+  zabbix_ssl_ca:
+  zabbix_mibs:
+  zabbix_nginx:
+
+services:
+  zabbix:
+    image: zabbix/zabbix-appliance:ubuntu-4.0-latest
+    environment:
+      - PHP_TZ=Europe/Lisbon
+      - ZBX_SERVER_NAME=Zabbix on Docker    
+    ports:
+      - 80:80 
+      - 10051:10051
+    volumes:
+      - zabbix_alertscripts:/usr/lib/zabbix/alertscripts
+      - zabbix_externalscripts:/usr/lib/zabbix/externalscripts
+      - zabbix_modules:/var/lib/zabbix/modules
+      - zabbix_enc:/var/lib/zabbix/enc
+      - zabbix_ssh_keys:/var/lib/zabbix/ssh_keys
+      - zabbix_certs:/var/lib/zabbix/ssl/certs
+      - zabbix_keys:/var/lib/zabbix/ssl/keys
+      - zabbix_ssl_ca:/var/lib/zabbix/ssl/ssl_ca
+      - zabbix_mibs:/var/lib/zabbix/mibs
+      - zabbix_nginx:/etc/ssl/nginx
+
