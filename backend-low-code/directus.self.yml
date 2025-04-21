@@ -16,6 +16,15 @@ services:
       start_interval: 5s
       start_period: 30s
 
+  pgweb:
+    container_name: pgweb
+    image: sosedoff/pgweb:latest
+    build: .
+    environment:
+      PGWEB_DATABASE_URL: postgres://directus:directus@database:5432/directus?sslmode=disable
+    ports:
+      - 8087:8081
+
   cache:
     image: redis
     healthcheck:
