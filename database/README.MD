@@ -121,6 +121,15 @@
         POSTGRES_PASSWORD: p057gr35-pwd
         POSTGRES_HOST_AUTH_METHOD: trust
   
+    pgweb:
+      container_name: pgweb
+      image: sosedoff/pgweb:latest
+      build: .
+      environment:
+        PGWEB_DATABASE_URL: postgres://postgres:p057gr35-pwd@db:5432/directus?sslmode=disable
+      ports:
+        - 8081:8081
+
   volumes:
     pgdata:
 ```
