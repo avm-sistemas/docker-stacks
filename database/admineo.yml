@@ -1,0 +1,5 @@
+services:
+  admineo:
+    image: avmesquita/admineo
+    ports:
+      - 9900:80
