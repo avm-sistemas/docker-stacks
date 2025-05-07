@@ -1,0 +1,13 @@
+volumes:
+  fing-data-volume:
+  
+services:
+   fing:
+     image: fing/fing-agent
+     restart: unless-stopped
+     volumes:
+       - fing-data-volume:/app/fingdata       
+     cap_add:
+       - NET_ADMIN       
+     ports:
+       - 44444:44444
