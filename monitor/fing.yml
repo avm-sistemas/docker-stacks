@@ -1,13 +1,25 @@
-volumes:
-  fing-data-volume:
-  
+# -----------------------------------------------------------------------------
+# Fing Agent Docker Compose Configuration
+# Copyright (C) 2025 Fing Ltd. All Rights Reserved.
+# -----------------------------------------------------------------------------
+
 services:
-   fing:
-     image: fing/fing-agent
-     restart: unless-stopped
-     volumes:
-       - fing-data-volume:/app/fingdata       
-     cap_add:
-       - NET_ADMIN       
-     ports:
-       - 44444:44444
+    fing-agent:
+        image: fing/fing-agent:latest
+        container_name: FingAgent
+        network_mode: host          # Required to access the real network in full
+        cap_add:
+            - NET_ADMIN             # Required for network monitoring
+        ports:
+            - "44444:44444"
+        restart: always             # User by Docker Compose
+        deploy:                     # Used by Docker Swarm
+            restart_policy:
+                condition: always
+        volumes:
+            - fing-data-volume:/app/fingdata
+
+
+volumes:                            # Let Docker manage volume creation
+    fing-data-volume:
+        name: fing-data-volume
