@@ -1,0 +1,11 @@
+services:
+  oracle:
+    image: oracle/database:21.3.0-xe
+    environment:
+      - ORACLE_PWD=your_best_password
+      - ORACLE_CHARACTERSET=AL32UTF8
+    ports: 
+      - 1521:1521 
+      - 5500:5500
+    volumes:
+      - ./oradata:/opt/oracle/oradata

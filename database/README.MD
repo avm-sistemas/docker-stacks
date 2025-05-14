@@ -54,7 +54,7 @@
         - MSSQL_AGENT_ENABLED=true
 ```
 
-## MYSQL SERVER
+## MYSQL
 
 ```
   services:
@@ -135,7 +135,7 @@
 ```
 
 
-## SQLITE SERVER
+## SQLITE
 
 ```
   services:
