@@ -1,5 +1,13 @@
-version: '3'
-
+volumes:
+   home-gallery-data:
+   home-gallery-pics:
+   
 services:
     gallery:
         image: xemle/home-gallery
+        volumes:
+           - home-gallery-data:/data
+           - home-gallery-pics:/data/Pictures
+        ports:
+          - 8033:3000
+
