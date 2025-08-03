@@ -1,0 +1,16 @@
+services:
+  gcp-storage:
+    container_name: gcp-storage-emulator
+    image: oittaa/gcp-storage-emulator
+    restart: unless-stopped
+    environment:
+      PORT: 9023
+      BUCKET: upload
+    ports:
+      - 9023:9023
+    volumes:
+      - cloudstorage:/storage
+
+volumes:
+  cloudstorage:
+  
