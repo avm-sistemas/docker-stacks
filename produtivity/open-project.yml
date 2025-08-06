@@ -1,0 +1,18 @@
+volumes:
+  openproject_pgdata:
+  openproject_assets:
+  
+services:
+  open-project:
+    image: openproject/openproject:16
+    restart: unless-stopped
+    ports:
+      - 8888:80 
+    environment:
+      OPENPROJECT_SECRET_KEY_BASE: secret
+      OPENPROJECT_HOST__NAME: localhost:8888
+      OPENPROJECT_HTTPS: false
+      OPENPROJECT_DEFAULT__LANGUAGE: pt
+    volumes:
+      - openproject_pgdata:/var/openproject/pgdata
+      - openproject_assets:/var/openproject/assets
