@@ -1,0 +1,11 @@
+volumes:
+   drawdb:
+   
+services:
+  drawdb:
+    image: avmesquita/drawdb
+    restart: unless-stopped
+    ports:
+      - 5173:80
+    volumes:
+      - drawdb:/var/www/html    
