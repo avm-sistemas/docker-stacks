@@ -1,7 +1,7 @@
 version: "3.8"
 
 services:
-  phpmyadmin:
+  mssqlserver:
     image: mcr.microsoft.com/mssql/server:2019-latest
     restart: unless-stopped
     container_name: MS-SQL-SERVER
