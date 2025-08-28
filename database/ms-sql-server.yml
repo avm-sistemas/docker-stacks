@@ -1,4 +1,5 @@
-version: "3.8"
+volumes:
+  sqlserver:
 
 services:
   mssqlserver:
@@ -6,11 +7,11 @@ services:
     restart: unless-stopped
     container_name: MS-SQL-SERVER
     ports:
-      - 1433:1433
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
+      - 1433:1433    
     environment:
       - ACCEPT_EULA=Y
-      - MSSQL_SA_PASSWORD=mssqlsapassword
+      - MSSQL_SA_PASSWORD=mssqlsapassword@1
       - MSSQL_PID=Standard
       - MSSQL_AGENT_ENABLED=true
+    volumes:
+      - sqlserver:/var/opt/mssql
