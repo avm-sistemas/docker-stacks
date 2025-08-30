@@ -1,0 +1,6 @@
+services:
+   wiremock-server:
+    image: wiremock/wiremock:3.13.1
+    ports:
+      - 9779:8080
+  
