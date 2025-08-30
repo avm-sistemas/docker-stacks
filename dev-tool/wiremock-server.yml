@@ -3,4 +3,13 @@ services:
     image: wiremock/wiremock:3.13.1
     ports:
       - 9779:8080
-  
+    restart: unless-stopped
+
+   wiremock-ui:
+    image: avmesquita/wiremock-ui:latest
+    ports:
+      - 9778:3000
+    environment:
+      NODE_ENV: production
+    command: yarn start
+    restart: unless-stopped
