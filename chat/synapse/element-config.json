@@ -1,0 +1,10 @@
+{
+    "default_server_config": {
+        "m.homeserver": {
+            "base_url": "http://localhost:8008",
+            "server_name": "chat.avmsistemas.net"
+        }
+    },
+    "disable_custom_urls": false,
+    "brand": "My Modern Palace"
+}
