@@ -1,0 +1,10 @@
+services:
+  openspeedtest:
+     image: openspeedtest/latest
+     container_name: openspeedtest
+     environment:
+       - SET_SERVER_NAME=AVM Sistemas
+     restart: unless-stopped
+     ports:
+       - 8000:3000 #http
+       - 4430:3001 #https
