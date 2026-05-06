@@ -1,0 +1,98 @@
+services:
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama
+    volumes:
+      - ollama_data:/root/.ollama
+    # Sem a seção de deploy/gpu para evitar erros de driver
+    ports:
+      - 11434:11434
+    restart: always
+    networks:
+      - ai-network
+
+  open-webui:
+    image: ghcr.io/open-webui/open-webui:main
+    container_name: open-webui
+    ports:
+      - "3030:8080"
+    environment:
+      - OLLAMA_BASE_URL=http://ollama:11434
+    volumes:
+      - open-webui-data:/app/backend/data
+    depends_on:
+      - ollama
+    restart: always
+    networks:
+      - ai-network
+
+  anythingllm:
+    image: mintplexlabs/anythingllm
+    container_name: anythingllm
+    ports:
+    - "3333:3001"
+    cap_add:
+      - SYS_ADMIN
+    environment:
+      - STORAGE_DIR=/app/server/storage
+      - JWT_SECRET="make this a large list of random numbers and letters 20+"
+      - LLM_PROVIDER=ollama
+      - OLLAMA_BASE_PATH=http://ollama:11434
+      - OLLAMA_MODEL_PREF=llama3.2:1b
+      - OLLAMA_MODEL_TOKEN_LIMIT=4096
+      - EMBEDDING_ENGINE=ollama
+      - EMBEDDING_BASE_PATH=http://ollama:11434
+      - EMBEDDING_MODEL_PREF=nomic-embed-text:latest
+      #- EMBEDDING_MODEL_MAX_CHUNK_LENGTH=8192
+      - VECTOR_DB=lancedb
+      - WHISPER_PROVIDER=local
+      - TTS_PROVIDER=native
+      - PASSWORDMINCHAR=8
+    depends_on:
+      - ollama
+    volumes:
+      - ./storage:/app/server/storage
+    restart: always
+    networks:
+      - ai-network
+
+  mcp-memory:
+    image: node:20-slim
+    container_name: mcp-memory
+    ports:
+      - "3334:3000"
+    volumes:
+      - ./data-memoria:/app/data
+    environment:
+      - CLAUDE_MEM_PATH=/app/data
+    command: >
+      sh -c "npx -y @modelcontextprotocol/server-memory"
+    stdin_open: true
+    tty: true
+    networks:
+      - ai-network
+    restart: always
+
+  searxng:
+    container_name: searxng
+    image: searxng/searxng:latest
+    ports:
+      - "3335:8080"
+    volumes:
+      - searxng-data:/etc/searxng
+    environment:
+      - SEARXNG_BASE_URL=http://localhost:3335/
+      - SEARXNG_SETTINGS_PATH=/etc/searxng/settings.yml
+    restart: always
+    networks:
+      - ai-network
+
+
+networks:
+  ai-network:
+    driver: bridge
+
+volumes:
+  ollama_data:
+  open-webui-data:
+  searxng-data:
