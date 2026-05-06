@@ -23,3 +23,8 @@ docker exec -it ollama ollama pull qwen2.5-coder:1.5b
 docker exec -it ollama ollama pull deepseek-coder:1.3b
 docker exec -it ollama ollama pull starcoder2:3b
 ```
+
+Install Embed Model:
+```
+ docker exec -it ollama ollama pull bge-m3
+```
