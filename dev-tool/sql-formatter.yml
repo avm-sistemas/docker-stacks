@@ -1,0 +1,6 @@
+services:
+  sql-formater:
+    image: avmesquita/sql-formatter:v0
+    restart: unless-stopped
+    ports:
+      - 8080:80
